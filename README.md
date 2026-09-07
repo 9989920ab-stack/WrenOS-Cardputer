@@ -1,4 +1,4 @@
-# WrenOS
+I Just made # WrenOS
 
 A small **KolibriOS-inspired** desktop shell for the M5Stack Cardputer.
 
