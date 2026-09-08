@@ -1,0 +1,52 @@
+name: Build WrenOS
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "WrenOS.ino"
+      - ".github/workflows/build.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout WrenOS
+        uses: actions/checkout@v4
+
+      - name: Install Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Configure Arduino CLI
+        run: |
+          arduino-cli config init
+          arduino-cli config set board_manager.additional_urls https://static-cdn.m5stack.com/resource/arduino/package_m5stack_index.json
+
+      - name: Install M5Stack ESP32 core
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install m5stack:esp32
+
+      - name: Install libraries
+        run: |
+          arduino-cli lib update-index
+          arduino-cli lib install M5Cardputer
+          arduino-cli lib install M5Unified
+          arduino-cli lib install M5GFX
+          arduino-cli lib install ArduinoJson
+
+      - name: Compile WrenOS
+        run: |
+          mkdir -p build
+          arduino-cli compile \
+            --fqbn m5stack:esp32:m5stack_cardputer \
+            --export-binaries \
+            --output-dir build \
+            .
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: WrenOS-firmware
+          path: build/*.bin
