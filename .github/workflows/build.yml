@@ -1,6 +1,4 @@
-name: Build WrenOS
-
-on:
+name: Build WrenOSon:
   workflow_dispatch:
   push:
     paths:
@@ -43,7 +41,7 @@ jobs:
             --fqbn m5stack:esp32:m5stack_cardputer \
             --export-binaries \
             --output-dir build \
-            .
+            WrenOS.ino
 
       - name: Upload firmware
         uses: actions/upload-artifact@v4
