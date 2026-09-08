@@ -1,4 +1,5 @@
-name: Build WrenOSon:
+name: Build WrenOS
+on:
   workflow_dispatch:
   push:
     paths:
@@ -8,7 +9,6 @@ name: Build WrenOSon:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout WrenOS
         uses: actions/checkout@v4
